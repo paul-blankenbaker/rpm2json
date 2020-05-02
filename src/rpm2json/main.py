@@ -1,48 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-This is a skeleton file that can serve as a starting point for a Python
-console script. To run this script uncomment the following lines in the
-[options.entry_points] section in setup.cfg:
+This is entry proint for the console script. To enable/package this script,
+add the following lines in the [options.entry_points] section in setup.cfg:
 
     console_scripts =
-         fibonacci = rpm2json.skeleton:run
+         rpm2json = rpm2json.main:run
 
-Then run `python setup.py install` which will install the command `fibonacci`
+Then run `python setup.py install` which will install the command `rpm2json`
 inside your current environment.
 Besides console scripts, the header (i.e. until _logger...) of this file can
 also be used as template for Python modules.
-
-Note: This skeleton file can be safely removed if not needed!
 """
 
 import argparse
+import os
+import rpm
 import sys
 import logging
 
 from rpm2json import __version__
+from rpm2json import rpmInfo
+from rpm2json import rpmList
 
 __author__ = "Paul Blankenbaker"
 __copyright__ = "Paul Blankenbaker"
 __license__ = "mit"
 
 _logger = logging.getLogger(__name__)
-
-
-def fib(n):
-    """Fibonacci example function
-
-    Args:
-      n (int): integer
-
-    Returns:
-      int: n-th Fibonacci number
-    """
-    assert n > 0
-    a, b = 1, 1
-    for i in range(n-1):
-        a, b = b, a+b
-    return a
-
 
 def parse_args(args):
     """Parse command line parameters
@@ -54,16 +38,18 @@ def parse_args(args):
       :obj:`argparse.Namespace`: command line parameters namespace
     """
     parser = argparse.ArgumentParser(
-        description="Just a Fibonacci demonstration")
+        description="Generates JSON file(s) of information from RPMs")
     parser.add_argument(
         "--version",
         action="version",
         version="rpm2json {ver}".format(ver=__version__))
     parser.add_argument(
-        dest="n",
-        help="n-th Fibonacci number",
-        type=int,
-        metavar="INT")
+        "--dir",
+        required=True,
+        help="Directory where the RPM repository lives")
+    parser.add_argument(
+        "--outdir",
+        help="If you want the JSON files written to a different directory")
     parser.add_argument(
         "-v",
         "--verbose",
@@ -100,9 +86,13 @@ def main(args):
     """
     args = parse_args(args)
     setup_logging(args.loglevel)
-    _logger.debug("Starting crazy calculations...")
-    print("The {}-th Fibonacci number is {}".format(args.n, fib(args.n)))
-    _logger.info("Script ends here")
+    #_logger.debug("Starting crazy calculations...")
+    if (args.dir != None):
+        #rpm.addMacro('_dpath', args.dir)
+        outdir = args.outdir
+        if outdir == None:
+            outdir = os.path.join(args.dir, "json")
+        rpmList(args.dir, outdir)
 
 
 def run():
