@@ -88,7 +88,7 @@ the RPM files can be found and it will create the JSON files.::
       "f": "repo/noarch/virtualbox-repo-32-10.nst32.noarch.rpm"
     }
   ]
-[nst@nst32-repo rpm2json]$ 
+  [nst@nst32-repo rpm2json]$ 
 
 The output from the commands shown above indicates that:
 
@@ -122,21 +122,25 @@ be able to make use of the ``setup.py`` file. For usage::
   python3 setup.py --help-commands
 
 To build::
+
   python3 setup.py build
 
 Surely there is a better way, but here is what I've been doing to run
 the rpm2json command directly out of the ``build`` directory (after a
 build).::
+
   export PYTHONPATH="${PWD}/build/lib/rpm2json"
   python3 "${PYTHONPATH}/main.py" -h
   python3 "${PYTHONPATH}/main.py" --outdir build/t1 --dir tests -vv  
 
 To check build::
+
   python3 setup.py check
 
 To test::
+
   python3 setup.py test
 
 To build RPM that can be installed and provide the rpm2json command::
-  python3 setup.py bdist_rpm
 
+  python3 setup.py bdist_rpm
