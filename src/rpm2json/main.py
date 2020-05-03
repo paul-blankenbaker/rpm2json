@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This is entry proint for the console script. To enable/package this script,
+This is entry point for the console script. To enable/package this script,
 add the following lines in the [options.entry_points] section in setup.cfg:
 
     console_scripts =
@@ -8,8 +8,6 @@ add the following lines in the [options.entry_points] section in setup.cfg:
 
 Then run `python setup.py install` which will install the command `rpm2json`
 inside your current environment.
-Besides console scripts, the header (i.e. until _logger...) of this file can
-also be used as template for Python modules.
 """
 
 import argparse
