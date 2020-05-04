@@ -17,7 +17,6 @@ import sys
 import logging
 
 from rpm2json import __version__
-from rpm2json import rpmInfo
 from rpm2json import rpmList
 
 __author__ = "Paul Blankenbaker"
