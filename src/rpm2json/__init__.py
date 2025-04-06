@@ -4,20 +4,21 @@ import json
 import os
 import time
 import logging
+from functools import cmp_to_key
+
+try:
+    from importlib.metadata import version, PackageNotFoundError
+except ImportError:
+    from importlib_metadata import version, PackageNotFoundError  # For Python < 3.8
+
+try:
+    __version__ = version("rpm2json")
+except PackageNotFoundError:
+    # Package is not installed
+    __version__ = "unknown"
 
 _logger = logging.getLogger(__name__)
 
-from functools import cmp_to_key
-from pkg_resources import get_distribution, DistributionNotFound
-
-try:
-    # Change here if project is renamed and does not equal the package name
-    dist_name = __name__
-    __version__ = get_distribution(dist_name).version
-except DistributionNotFound:
-    __version__ = 'unknown'
-finally:
-    del get_distribution, DistributionNotFound
 
 def _encodeList(l):
     """Check for binary arrays in list and tries to decode to string
